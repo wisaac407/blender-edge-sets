@@ -2,6 +2,19 @@ import bpy
 import bmesh
 
 
+bl_info = {
+    "name": "Edge Sets",
+    "author": "Isaac Weaver",
+    "version": (0, 1),
+    "blender": (2, 78, 0),
+    "location": "Properties > Mesh > Edge Sets",
+    "description": "Create edge sets to easily manage edge creases and bevel weights.",
+    "warning": "",
+    "wiki_url": "",
+    "category": "Mesh",
+}
+
+
 # ------------------
 # --- Utilities ----
 # ------------------
