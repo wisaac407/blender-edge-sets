@@ -212,7 +212,7 @@ class SelectEdgeSetOperator(bpy.types.Operator):
                 for edge in bm.edges:
                     if edge[edge_set] - 1 == mesh.active_edge_set_index:
                         edge.select = True
-                bm.select_flush(True)
+                bm.select_flush_mode()
         return {"FINISHED"}
 
 
@@ -236,7 +236,7 @@ class DeselectEdgeSetOperator(bpy.types.Operator):
                 for edge in bm.edges:
                     if edge[edge_set] - 1 == mesh.active_edge_set_index:
                         edge.select = False
-                bm.select_flush(False)
+                bm.select_flush_mode()
         return {"FINISHED"}
 
 
