@@ -60,12 +60,36 @@ def crease_update_callback(self, context):
                     edge[crease] = self.crease
 
 
+def bevel_update_callback(self, context):
+    mesh = self.id_data
+    index = mesh.edge_sets.values().index(self)
+
+    with create_general_bmesh(context, mesh) as bm:
+        name = 'edge_set'
+        if name in bm.edges.layers.int:
+            if len(bm.edges.layers.bevel_weight) > 0:
+                bevel = bm.edges.layers.bevel_weight[0]
+            else:
+                bevel = bm.edges.layers.bevel_weight.new()
+            edge_set = bm.edges.layers.int[name]
+
+            for edge in bm.edges:
+                if edge[edge_set] - 1 == index:
+                    edge[bevel] = self.bevel
+
+
 class EdgeSetItem(bpy.types.PropertyGroup):
     crease = bpy.props.FloatProperty(
         name="Crease",
+        subtype='FACTOR',
         min=0, max=1,
         update=crease_update_callback)
-    bevel = bpy.props.FloatProperty(min=0, max=1)
+
+    bevel = bpy.props.FloatProperty(
+        name="Bevel Weight",
+        subtype='FACTOR',
+        min=0, max=1,
+        update=bevel_update_callback)
 
 
 # ------------------
@@ -260,6 +284,11 @@ class EdgeSetsPanel(bpy.types.Panel):
         col = row.column(align=True)
         col.operator("mesh.edge_set_add", icon='ZOOMIN', text="")
         col.operator("mesh.edge_set_remove", icon='ZOOMOUT', text="")
+
+        row = layout.row()
+        row.prop(mesh.edge_sets[mesh.active_edge_set_index], 'crease')
+        row = layout.row()
+        row.prop(mesh.edge_sets[mesh.active_edge_set_index], 'bevel')
 
         if context.mode == "EDIT_MESH" and len(mesh.edge_sets) > 0:
             row = layout.row()
