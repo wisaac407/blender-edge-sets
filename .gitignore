@@ -6,3 +6,6 @@ __pycache__/
 # Test blend files
 *.blend
 *.blend[0-9]
+
+# Pycharm project files
+.idea/
